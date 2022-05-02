@@ -30,4 +30,4 @@ router
 router.route('/:thoughtId/:reactionId')
 	.delete(removeReaction);
   
-module.export = router;
+module.exports = router;
