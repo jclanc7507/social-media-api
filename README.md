@@ -1,12 +1,13 @@
 # Social Media API   
   ## Description   
-  an API for a social network web application where users can share their thoughts, react to friends’ thoughts, and create a friend list. API uses Express.js for routing, a MongoDB database, and the Mongoose ODM.   
+  An API for a social network web application where users can share their thoughts, react to friends’ thoughts, and create a friend list. API uses Express.js for routing, a MongoDB database, and the Mongoose ODM.   
   
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
  ![badmath](https://img.shields.io/github/languages/top/jclanc7507/social-media-api)   
   
 
   ## Table of Contents   
+  * [Demonstration](#Demonstration)
   * [Installation](#Installation)   
   * [Usage](#Usage)   
   * [Contributing](#Contributing)   
@@ -15,7 +16,8 @@
   * [License](#License)   
 
 
-
+  ## Demonstration
+  https://drive.google.com/file/d/156L073uuXtwzemyqsnGVmqi80pfowFMm/view
   
   ## Installation
 `npm i`   
