@@ -1,6 +1,34 @@
 const { Thought, User } = require('../models');
 
 const thoughtController = {
+
+  // get all thoughts
+  getAllThoughts(req, res) {
+		Thought.find({})
+			.select('-__v')
+			.sort({ _id: -1 })
+			.then(dbThoughtData => res.json(dbThoughtData))
+			.catch(err => {
+				console.log(err);
+				res.sendStatus(400);
+			});
+	},
+
+	// get one thought by id
+	getThoughtById({ params }, res) {
+		Thought.findOne({ _id: params.thoughtId })
+			.populate({
+				path: 'reactions',
+				select: '-__v'
+			})
+			.select('-__v')
+			.then(dbThoughtData => res.json(dbThoughtData))
+			.catch(err => {
+				console.log(err);
+				res.sendStatus(400);
+			});
+	},
+
   // add thought from user
   addThought({ params, body}, res) {
     console.log(params);
@@ -8,8 +36,8 @@ const thoughtController = {
       .then(({ _id }) => {
         return User.findOneAndUpdate(
           { _id: params.userId },
-          { $push: { comments: _id } },
-          { new: true }
+          { $push: { thoughts: _id } },
+          { new: true, runValidators: true }
         );
       })
       .then(dbUserData => {
@@ -42,15 +70,15 @@ const thoughtController = {
 
   // remove thought
   removeThought({ params }, res) {
-    Thought.findOneAndDelete({ _id: params.commentId })
+    Thought.findOneAndDelete({ _id: params.thoughtId })
       .then(removeThought => {
         if (!removeThought) {
           return res.status(404).json({ message: 'No reaction found with this ID'});
         }
         return User.findOneAndUpdate(
           { _id: params.userId },
-          { $pull: { comments: params.commentId } },
-          { new: true }
+          { $pull: { thoughts: params.thoughtId } },
+          { new: true, runValidators: true }
         );
       })
       .then(dbUserData => {
@@ -65,14 +93,14 @@ const thoughtController = {
 
   // remove reaction
   removeReaction({ params }, res) {
-    Comment.findOneAndUpdate(
-      { _id: params.commentId },
+    Thought.findOneAndUpdate(
+      { _id: params.thoughtId },
       { $pull: { replies: { reactionId: params.reactionId } } },
-      { new: true }
+      { new: true, runValidators: true }
     )
       .then(dbUserData => res.json(dbUserData))
       .catch(err => res.json(err));
   }
 };
 
-module.exports = commentController;
+module.exports = { thoughtController };
